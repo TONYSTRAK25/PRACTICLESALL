@@ -1,36 +1,28 @@
-// SPDX-License-Identifier: Rohan Kute
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-contract StudentRegistry {
+contract StudentData {
+    
     struct Student {
+        uint256 id;
         string name;
-        uint256 age;
+        uint8 age;
     }
 
-    Student[] private students;
+    Student[] public students;
 
-    event ReceivedEther(address indexed sender, uint256 value);
+    function addStudent(uint256 _id, string memory _name, uint8 _age) public {
+        students.push(Student(_id, _name, _age));
+    }
 
-    receive() external payable {
-   
-        emit ReceivedEther(msg.sender, msg.value);
+    function getStudent(uint256 index) public view returns (uint256, string memory, uint8) {
+        require(index < students.length, "Invalid index");
+        Student memory s = students[index];
+        return (s.id, s.name, s.age);
     }
 
     fallback() external payable {
-        emit ReceivedEther(msg.sender, msg.value);
     }
 
-    function addStudent(string memory name, uint256 age) public {
-        students.push(Student(name, age));
-    }
-
-    function getStudent(uint256 index) public view returns (string memory, uint256) {
-        require(index < students.length, "Student not found");
-        return (students[index].name, students[index].age);
-    }
-
-    function getStudentCount() public view returns (uint256) {
-        return students.length;
-    }
-
+    receive() external payable {}
 }
