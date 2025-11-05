@@ -1,6 +1,8 @@
 def knapsack(values, weights, capacity):
     n = len(values)
     dp = [[0 for x in range(capacity + 1)] for y in range(n + 1)]
+
+    
     for i in range(1, n + 1):
         for w in range(1, capacity + 1):
             if weights[i - 1] <= w:
